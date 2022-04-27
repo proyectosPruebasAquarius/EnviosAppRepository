@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +13,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('/restablecimiento/{user}', function (Request $request) {
+    if (! $request->hasValidSignature()) {
+        abort(401);
+    }
+    $user_id = $request->user;
+ 
+    return view('email.forgot')->with('user_id', $user_id);
+
+})->name('restablecimiento');
+
+
+
+
+
+
+
+
+
 Route::get('/', function () {
     return view('inicio');
 });
 
+Route::get('/restablecer-contreseña', function () {
+    return view('login.forgot');
+});
 
 Route::get('/inicio-sesion', function () {
     return view('login.login');

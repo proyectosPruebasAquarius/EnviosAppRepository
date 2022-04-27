@@ -20,7 +20,7 @@
                 
               </div>
           
-          <a class="text-black" href="#!">¿Olvidaste tu contraseña?</a>
+          <a class="text-black" href="{{ url('/restablecer-contreseña') }}">¿Olvidaste tu contraseña?</a>
         </div>
 
 

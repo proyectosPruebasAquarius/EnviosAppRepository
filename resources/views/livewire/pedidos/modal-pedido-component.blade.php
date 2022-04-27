@@ -46,7 +46,7 @@
               @if ($zoneSelected <> null)
                 <div class="mb-3">
                   <div class="row">
-                    @foreach ($deliveries as $deli)
+                    @forelse ($deliveries as $deli)
                     <div class="col-sm-6">
                       <div class="card mb-3">
                         <div class="card-body text-center mx-center">
@@ -61,14 +61,19 @@
                           <img src="{{ asset('admin/images/faces/profile.png') }}" class=" mb-2" width="125" height="125">
                           <p class="card-text">
                             <li>
-                              Vehiculo: Motocicleta
+                              Vehiculo: {{ $deli->tipo_vehiculo }}
                             </li>
                           </p>
                           <a href="#" class="btn btn-primary">Go somewhere</a>
                         </div>
                       </div>
                     </div>
-                    @endforeach
+                    @empty
+                    <h2 class="text-center">No hay repartidores disponibles para esta zona</h2>
+                    @endforelse
+
+                    
+
                   </div>
                 </div>
                 

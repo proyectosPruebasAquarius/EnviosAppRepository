@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pedido;
+
 use Illuminate\Support\Facades\Auth;
 class PedidoController extends Controller
 {
@@ -71,9 +72,11 @@ class PedidoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function pedidosRepartidor($id)
     {
-        //
+        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
+        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
+        ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',0)->get();
     }
 
     /**

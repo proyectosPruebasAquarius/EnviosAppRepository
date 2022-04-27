@@ -137,6 +137,7 @@
 
             <p class="sidebar-menu-title">Menú</p>
           </li>
+          @if (Auth::user()->id_tipo_usuario == 2)
           <li class="nav-item" id="inicio">
             <a class="nav-link " href="{{ url('/pedidos') }}">
               <i class="typcn typcn-home menu-icon"></i>
@@ -161,6 +162,16 @@
               <span class="menu-title">Pedidos Rechazados</span>
             </a>
           </li>
+          @else
+          <li class="nav-item" id="rechazados">
+            <a class="nav-link" href="{{ url('/pedidos/rechazados') }}">
+              <i class="typcn typcn-times menu-icon"></i>
+              <span class="menu-title">Mi Pedidos</span>
+            </a>
+          </li>
+          @endif
+          
+
 
 
         </ul>

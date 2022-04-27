@@ -78,7 +78,7 @@ class ModalPedidoComponent extends Component
 
         } catch (\Throwable $th) {
              $this->dispatchBrowserEvent('closeModal'); 
-            $this->alert('warning', $th->getMessage(), [
+            $this->alert('warning','Ocurrio un problema, intenta nuevamente', [
             'position' => 'center'
             ]);
         }
@@ -96,7 +96,9 @@ class ModalPedidoComponent extends Component
     {
         if ($this->zoneSelected <> null) {
             $this->deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')->join('detalles_zonas','detalles_zonas.id_repartidor','=','repartidores.id')
-            ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$this->zoneSelected)->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor')->get();
+            ->join('datos_vehiculos','datos_vehiculos.id_user','=','users.id')
+            ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$this->zoneSelected)
+            ->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor','datos_vehiculos.tipo as tipo_vehiculo')->get();
         }
     }
     
@@ -113,7 +115,9 @@ class ModalPedidoComponent extends Component
     {   
         if ($this->zoneSelected <> null) {
             $this->deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')->join('detalles_zonas','detalles_zonas.id_repartidor','=','repartidores.id')
-            ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$this->zoneSelected)->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor')->get();
+            ->join('datos_vehiculos','datos_vehiculos.id_user','=','users.id')
+            ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$this->zoneSelected)
+            ->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor','datos_vehiculos.tipo as tipo_vehiculo')->get();
         }     
         $this->zones = Zona::where('estado',1)->select('nombre','id as id_zone')->get();              
         return view('livewire.pedidos.modal-pedido-component');
