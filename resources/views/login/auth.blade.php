@@ -60,5 +60,18 @@
     <script src="{{ asset('vendors/@popperjs/popper.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
+    <script>
+        function showPassword() {
+            var password = document.getElementById("password");
+            var confirm_password = document.getElementById("confirm_password");
+            if (password.type === "password" && confirm_password.type === "password") {
+                password.type = "text";
+                confirm_password.type = "text";
+            } else {
+                password.type = "password";
+                confirm_password.type = "password";
+            }
+        }
+    </script>
 </body>
 </html>

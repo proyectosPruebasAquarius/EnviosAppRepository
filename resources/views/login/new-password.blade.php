@@ -1,6 +1,6 @@
 @extends('login.auth')
 
-@section('title','Olvide mi contraseña')
+@section('title','Nueva contraseña')
     
 
 
@@ -14,16 +14,13 @@
             <div class="row g-0">
               <div class="col-lg-6">
                 <div class="card-body p-md-5 mx-md-4">
-                  <div class="d-grid gap-2 d-md-block">
-                    <a class="btn btn-primary" type="button" href="{{ url('/') }}" >Regresar</a>
-                    
-                  </div>
+  
                   <div class="text-center">
-                    <img src="{{ asset('assets/img/gallery/forgot.png') }}" style="width: 185px;" alt="logo" class="mb-3">
+                    <img src="{{ asset('assets/img/gallery/new-password.png') }}" style="width: 185px;" alt="logo" class="mb-3">
                     <h4 class="mt-1 mb-5 pb-1">Traffico</h4>
                   </div>
   
-                  @livewire('forgot-component')
+                  @livewire('new-password-component',['id_user' => $user_id])
   
                 </div>
               </div>

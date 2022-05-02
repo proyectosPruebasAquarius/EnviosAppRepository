@@ -350,7 +350,7 @@
                     <tr>
                       <td>
                         <h1 style=" text-align: center;color:#F95C19;" >Traffico</h1>
-                        <p>Restablecimiento de contraseña.</p>
+                        <p class="text-center">Restablecimiento de contraseña. Valido durante 5 minutos</p>
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>
@@ -358,7 +358,7 @@
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                   <tbody>
                                     <tr style=" text-align: center;" >
-                                      <td> <a href="{{ url($url) }}" >Restablecer mi contraseña</a> </td>
+                                      <td> <a href="{{ url($url) }}" target="_blank" >Restablecer mi contraseña</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -366,8 +366,10 @@
                             </tr>
                           </tbody>
                         </table>
+                        <p>Si no funciona el boton, te proporcionamos el link: {{ $url }}</p>
+                        <br>
                         <p>Si no has solicitado el restablecimiento de tu contraseña, ignora este correo electrónico.</p>
-                        <p>Link: {{ $url }}</p>
+                        
                       </td>
                     </tr>
                   </table>

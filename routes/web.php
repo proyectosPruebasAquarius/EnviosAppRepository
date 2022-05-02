@@ -20,17 +20,13 @@ Route::get('/restablecimiento/{user}', function (Request $request) {
     }
     $user_id = $request->user;
  
-    return view('email.forgot')->with('user_id', $user_id);
+    return view('login.new-password')->with('user_id', $user_id);
 
 })->name('restablecimiento');
 
-
-
-
-
-
-
-
+Route::get('/test', function () {
+    return view('login.new-password');
+});
 
 Route::get('/', function () {
     return view('inicio');
@@ -67,9 +63,6 @@ Route::get('/codigo-verificacion',function(){
 })->middleware(['isnotlogin','emailisnotverify']);
 
 
-Route::get('/test',function(){
-    return view('email.cod-verification');
-});
 
 Route::get('logout',[App\Http\Controllers\cerrarSesionController::class, 'logout']);
 
