@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pedido;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 class PedidoController extends Controller
@@ -72,11 +73,18 @@ class PedidoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function pedidosRepartidor($id)
+    public function pedidosRepartidor()
     {
-        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
-        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
-        ->where('pedidos.id_usuario',Auth::user()->id)->where('pedidos.estado',0)->get();
+
+        $repartidor = User::join('repartidores','repartidores.id_usuario','=','users.id')->select('repartidores.id')->where('users.id',Auth::user()->id)->get();
+
+
+
+        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->select('pedidos.direccion_entrega',
+        'pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido','pedidos.id_usuario')
+        ->where('pedidos.id_repartidor',$repartidor[0]->id)->get();
+
+        return view('admin.repartidores')->with('allp',$allPedidos);
     }
 
     /**

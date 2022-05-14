@@ -5,12 +5,12 @@
 
 <div class="row">
   
-  <div class="col-lg-9 d-flex grid-margin stretch-card">
+  <div class="col-lg-12 d-flex grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Mis Pedidos</h4>
-        
+        <h4 class="card-title">Mis Pedidos</h4>        
         @livewire('repartidores.pedidos-component')
+        @livewire('repartidores.estados-component')
         <div class="table-responsive">
           <table class="table" id="myTable">
             <thead>
@@ -26,10 +26,10 @@
               @foreach ($allp as $pedido)
               <tr>
                 @php
-                    $repartidor = DB::table('users')->select('name')->where('id',$pedido->id_usuario)->first();
+                    $cliente = DB::table('users')->select('name')->where('id',$pedido->id_usuario)->first();
                 @endphp
                 <td>
-                  {{ $repartidor->name }}
+                  {{ $cliente->name }}
                 </td>
                 <td>{{ $pedido->direccion_recogida }}</td>
                 <td>{{ $pedido->direccion_entrega }}</td>
@@ -41,14 +41,17 @@
                     @case(1)
                     <label class="badge badge-info">Pedido aceptado</label>
                     @break
+                    @case(2)
+                    <label class="badge badge-secondary">Pedido en preparación</label>
+                    @break
                     @case(3)
                     <label class="badge badge-secondary">Pendiente de recogida</label>
                     @break
                     @case(4)
-                    <label class="badge badge-info">Paquete recogido</label>
+                    <label class="badge badge-info">Pedido recogido</label>
                     @break
                     @case(5)
-                    <label class="badge badge-info">En proceso</label>
+                    <label class="badge badge-info">En transito</label>
                     @break
                     @case(6)
                     <label class="badge badge-success">Entregado</label>
@@ -61,14 +64,20 @@
                     @break
                   @endswitch                
                 </td>
-                <td class="text-center">
-                  
-                  <button type="button" class="btn" data-toggle="modal" data-target="#PedidoModal">
-                    <i class="typcn typcn-edit mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"></i>
+                <td class="text-center"> 
+                  @if ($pedido->estado === 0)
+                  <button type="button" class="btn" onclick="Livewire.emit('acceptQuestion',@js($pedido->id_pedido) )" >
+                    <span class="iconify" data-icon="typcn:input-checked" style="color: #2b80ff;" data-width="30"></span>
                   </button>
-                  <button type="button" class="btn" >
-                    <i class="typcn typcn-trash mx-0 text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i>
+                  <button type="button" class="btn" onclick="Livewire.emit('rejectQuestion',@js($pedido->id_pedido) )" >
+                    <span class="iconify" data-icon="typcn:delete" style="color: red;" data-width="30"></span>
                   </button>
+                  @else
+                  <button type="button" @if($pedido->estado === 6 || $pedido->estado === 7  ) disabled @else  @endif class="btn"  @if($pedido->estado === 6 || $pedido->estado === 7  )  @else data-toggle="modal" data-target="#PedidoRModal" onclick="Livewire.emit('asingId',@js($pedido) )"  @endif >
+                    <span class="iconify" data-icon="typcn:clipboard" style="color: #2b80ff;" data-width="30" ></span>
+                  </button>
+                  @endif                 
+                 
 
                 </td>
               </tr>
@@ -93,12 +102,9 @@
   });
   } );
 
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
+  
 
-
+  $.fn.modal.Constructor.prototype._enforceFocus = function() {};
 
 
   

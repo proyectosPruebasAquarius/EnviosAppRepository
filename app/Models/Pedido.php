@@ -18,6 +18,7 @@ class Pedido extends Model
         'estado',
         'created_at',
         'updated_at',
-        'delivered_at'
+        'delivered_at',
+        'motivo'
     ];
 }

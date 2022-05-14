@@ -14,10 +14,12 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  
   @livewireStyles
   <link rel="stylesheet" href="{{ asset('admin/css/vertical-layout-light/style.css') }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('admin/images/favicon.png') }}" />
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 </head>
 
 <body>
@@ -163,10 +165,10 @@
             </a>
           </li>
           @else
-          <li class="nav-item" id="rechazados">
-            <a class="nav-link" href="{{ url('/pedidos/rechazados') }}">
-              <i class="typcn typcn-times menu-icon"></i>
-              <span class="menu-title">Mi Pedidos</span>
+          <li class="nav-item" id="mis-pedidios">
+            <a class="nav-link" href="{{ url('/mis-pedidos') }}">
+              <i class="typcn typcn-clipboard menu-icon"></i>
+              <span class="menu-title">Mis Pedidos</span>
             </a>
           </li>
           @endif
@@ -199,6 +201,7 @@
   <!-- container-scroller -->
   <!-- base:js -->
   @livewireScripts
+  <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
   <script src="{{ asset('admin/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -214,7 +217,12 @@
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
   <!-- endinject -->
   <!-- plugin js for this page -->
- 
+  <script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  </script>
   @stack('scripts')
 </body>
 
