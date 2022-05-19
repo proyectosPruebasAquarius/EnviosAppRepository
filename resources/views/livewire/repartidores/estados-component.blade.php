@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h2 class="modal-title  col-11 text-center" id="PedidoRModalLabel">Estado del pedido {{ $estado }}</h2>
+              <h2 class="modal-title  col-11 text-center" id="PedidoRModalLabel">Estado del pedido</h2>
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">

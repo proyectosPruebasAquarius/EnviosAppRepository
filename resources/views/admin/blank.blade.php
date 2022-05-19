@@ -9,17 +9,19 @@
   <!-- base:css -->
   <link rel="stylesheet" href="{{ asset('admin/vendors/typicons.font/font/typicons.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/vendors/css/vendor.bundle.base.css') }}">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-  
+
   @livewireStyles
   <link rel="stylesheet" href="{{ asset('admin/css/vertical-layout-light/style.css') }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('admin/images/favicon.png') }}" />
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
 </head>
 
 <body>
@@ -44,55 +46,9 @@
           <li class="nav-item dropdown d-flex">
 
           <li class="nav-item dropdown  d-flex">
-            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
-              id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="typcn typcn-bell mr-0"></i>
-              <span class="count bg-primary">2</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-              aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notificaciones</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="typcn typcn-info-large mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Pedido entregado. Reparidor:Juan Perez </h6>
-                  <p class="font-weight-light small-text mb-0">
-                    31-3-2022
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-danger">
-                    <i class="typcn typcn-cancel mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Pedido rechazado. Reparidor:Juan Perez </h6>
-                  <p class="font-weight-light small-text mb-0">
-                    31-3-2022
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="typcn typcn-user-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
+             @livewire('notificacion.notificacion-component')
           </li>
+        
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle  pl-0 pr-0" href="#" data-toggle="dropdown" id="profileDropdown">
               <i class="typcn typcn-user-outline mr-0"></i>
@@ -165,14 +121,14 @@
             </a>
           </li>
           @else
-          <li class="nav-item" id="mis-pedidios">
+          <li class="nav-item" id="mis-Rpedidios">
             <a class="nav-link" href="{{ url('/mis-pedidos') }}">
               <i class="typcn typcn-clipboard menu-icon"></i>
               <span class="menu-title">Mis Pedidos</span>
             </a>
           </li>
           @endif
-          
+
 
 
 

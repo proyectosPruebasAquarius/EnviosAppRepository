@@ -47,11 +47,11 @@ Route::get('/registro-repartidor', function () {
     return view('login.register-driver');
 })->middleware('islogin');
 
-Route::get('/pedidos','PedidoController@index')->middleware(['isnotlogin','emailisverify','role']);
+Route::get('/pedidos','PedidoController@index')->middleware(['isnotlogin','emailisverify','roleR']);
 Route::get('/pedidos/rechazados','PedidoController@rechazados')->middleware(['isnotlogin','emailisverify']);
 Route::get('/pedidos/pendientes','PedidoController@pendientes')->middleware(['isnotlogin','emailisverify']);
 Route::get('/pedidos/completados','PedidoController@completados')->middleware(['isnotlogin','emailisverify']);
-Route::get('/mis-pedidos','PedidoController@pedidosRepartidor')->middleware(['isnotlogin','emailisverify']);
+Route::get('/mis-pedidos','PedidoController@pedidosRepartidor')->middleware(['isnotlogin','emailisverify','roleC']);
 
 
 

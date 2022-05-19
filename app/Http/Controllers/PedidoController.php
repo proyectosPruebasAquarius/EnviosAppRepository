@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
 use App\Models\User;
-
 use Illuminate\Support\Facades\Auth;
+
 class PedidoController extends Controller
 {
     /**
@@ -19,6 +19,8 @@ class PedidoController extends Controller
        $allPedidos = Pedido::join('repartidores','repartidores.id','=','pedidos.id_repartidor')->join('users','users.id','=','pedidos.id_usuario')
        ->select('repartidores.id_usuario','repartidores.id as id_repartidor','pedidos.direccion_entrega','pedidos.direccion_recogida','pedidos.estado','pedidos.id as id_pedido')
        ->where('pedidos.id_usuario',Auth::user()->id)->get();
+
+      
 
        return view('admin.pedidos')->with('allp',$allPedidos);
     }

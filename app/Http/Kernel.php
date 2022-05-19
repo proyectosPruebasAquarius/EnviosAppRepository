@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'isnotlogin' => \App\Http\Middleware\isNotLogIn::class,
         'emailisverify' => \App\Http\Middleware\IsEmailVerify::class,
         'emailisnotverify' => \App\Http\Middleware\IsNotEmailVerify::class,
-        'role' => \App\Http\Middleware\RoleUser::class,
+        'roleR' => \App\Http\Middleware\RoleUser::class,
+        'roleC' => \App\Http\Middleware\RoleComerciante::class,
     ];
 }

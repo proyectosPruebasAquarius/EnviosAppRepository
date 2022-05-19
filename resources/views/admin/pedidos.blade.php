@@ -7,7 +7,7 @@
   <div class="col-xl-3 d-flex grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <div class="d-flex flex-wrap justify-content-between">
+        <div class="d-flex  justify-content-between">
           <h4 class="card-title mb-3">Repartidores con mas entregas de tus paquetes</h4>
         </div>
         <div class="row">
@@ -18,38 +18,21 @@
                   <div class="font-weight-medium">Repartidor</div>
                   <div class="font-weight-medium">Cantidad</div>
                 </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Connor Chandler</div>
-                  <div class="small">$ 4909</div>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Russell Floyd</div>
-                  <div class="small">$857</div>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Douglas White</div>
-                  <div class="small">$612	</div>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Alta Fletcher </div>
-                  <div class="small">$233</div>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Marguerite Pearson</div>
-                  <div class="small">$233</div>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Leonard Gutierrez</div>
-                  <div class="small">$35</div>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                  <div class=" font-weight-medium">Helen Benson</div>
-                  <div class="small">$43</div>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class=" font-weight-medium">Helen Benson</div>
-                    <div class="small">$43</div>
-                  </div>
+                @php
+                $repartidores = DB::table('repartidores')->join('users','users.id','repartidores.id_usuario')
+                ->join('pedidos','pedidos.id_repartidor','repartidores.id')->where('pedidos.id_usuario',Auth::user()->id)
+                ->where('pedidos.estado',6)->select('users.name',DB::raw('count(pedidos.id) as user_count'))
+                ->groupBy('users.name')->orderBy('user_count','desc')->get();
+                @endphp
+                 @forelse ($repartidores as $rp)
+                 <div class="d-flex justify-content-between mb-4">
+                   <div class=" font-weight-medium">{{ $rp->name }}</div>
+                   <div class="small">{{ $rp->user_count }}</div>
+                 </div>
+                 @empty
+                 <h1 class="text-center">No hay datos disponibles</h1>
+
+                 @endforelse
               </div>
             </div>
           </div>
@@ -67,19 +50,23 @@
           <table class="table" id="myTable">
             <thead>
               <tr>
+                <th class="text-center">No</th>
                 <th>Repartidor</th>
                 <th>Dirección de recogida</th>
                 <th>Dirección de entrega</th>
                 <th>Estado</th>
-                <th class="text-center" >Acciones</th>
+                <th class="text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($allp as $pedido)
               <tr>
                 @php
-                    $repartidor = DB::table('users')->select('name')->where('id',$pedido->id_usuario)->first();
+                $repartidor = DB::table('users')->select('name')->where('id',$pedido->id_usuario)->first();
                 @endphp
+                <td class="text-center">
+                  {{ $pedido->id_pedido }}
+                </td>
                 <td>
                   {{ $repartidor->name }}
                 </td>
@@ -87,39 +74,51 @@
                 <td>{{ $pedido->direccion_entrega }}</td>
                 <td>
                   @switch($pedido->estado)
-                    @case(0)
-                    <label class="badge badge-secondary">Pendiente de aceptación</label>
-                    @break
-                    @case(1)
-                    <label class="badge badge-info">Pedido aceptado</label>
-                    @break
-                    @case(3)
-                    <label class="badge badge-secondary">Pendiente de recogida</label>
-                    @break
-                    @case(4)
-                    <label class="badge badge-info">Paquete recogido</label>
-                    @break
-                    @case(5)
-                    <label class="badge badge-info">En proceso</label>
-                    @break
-                    @case(6)
-                    <label class="badge badge-success">Entregado</label>
-                    @break
-                    @case(7)
-                    <label class="badge badge-danger">Rechazado</label>
-                    @break
-                    @case(8)
-                    <label class="badge badge-danger">No entregado</label>
-                    @break
-                  @endswitch                
+                  @case(0)
+                  <label class="badge badge-secondary">Pendiente de aceptación</label>
+                  @break
+                  @case(1)
+                  <label class="badge badge-info">Pedido aceptado</label>
+                  @break
+                  @case(2)
+                    <label class="badge badge-secondary">Pedido en preparación</label>
+                  @break
+                  @case(3)
+                  <label class="badge badge-secondary">Pendiente de recogida</label>
+                  @break
+                  @case(4)
+                  <label class="badge badge-info">Paquete recogido</label>
+                  @break
+                  @case(5)
+                  <label class="badge badge-info">En proceso</label>
+                  @break
+                  @case(6)
+                  <label class="badge badge-success">Entregado</label>
+                  @break
+                  @case(7)
+                  <label class="badge badge-danger">Rechazado</label>
+                  @break
+                  @case(8)
+                  <label class="badge badge-danger">No entregado</label>
+                  @break
+                  @endswitch
                 </td>
                 <td class="text-center">
                   
-                  <button type="button" class="btn" data-toggle="modal" data-target="#PedidoModal">
-                    <i class="typcn typcn-edit mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"></i>
+                  <button type="button" @if($pedido->estado === 6 || $pedido->estado === 7) disabled @else @endif   class="btn" data-toggle="modal" data-target="#UpdateModal" onclick="Livewire.emit('asingPedido',@js($pedido))">
+                    <i class="typcn typcn-edit mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title=" @if($pedido->estado === 6 || $pedido->estado === 7) Acción deshabilitada @else Editar pedido @endif"></i>
                   </button>
-                  <button type="button" class="btn" >
-                    <i class="typcn typcn-trash mx-0 text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"></i>
+                  @if ($pedido->estado === 1 || $pedido->estado === 2 )
+                  @livewire('pedidos.modal-estados-component')
+                  <button type="button" class="btn" data-toggle="modal" data-target="#stateModal" onclick="Livewire.emit('asingId',@js($pedido))">
+                    <i class="typcn typcn-info-large-outline mx-0 text-info" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="Estados del pedido"></i>
+                  </button>
+                  @endif
+                  <button type="button" class="btn" @if($pedido->estado === 6 || $pedido->estado === 7) disabled @else @endif>
+                    <i class="typcn typcn-cancel mx-0 text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="@if($pedido->estado === 0 ||$pedido->estado === 1 ) Cancelar pedido  @else Acción deshabilitada  @endif "></i>
                   </button>
 
                 </td>
@@ -140,8 +139,8 @@
   $(document).ready( function () {
   $('#myTable').DataTable({
     "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
-                },
+        "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+      },
   });
   } );
 

@@ -3,30 +3,26 @@
 namespace App\Http\Livewire\Pedidos;
 
 use Livewire\Component;
-use App\Models\Zona;
-use App\Models\Repartidor;
+
 use App\Models\Pedido;
-use Illuminate\Support\Facades\Auth;
+
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class ModalUpdateComponent extends Component
 {
 
     use LivewireAlert;
-    public $zones = [];
-    public $zoneSelected;
-    public $deliveries = [];
-    public $repartidor;
+    
+    public $id_pedido;
     public $direccion_recogida;
     public $direccion_entrega;
-    public $listeners = ['reset'=>'resetInput','asingPedido'=>'asingPedido'];
+    public $listeners = ['asingPedido'=>'asingPedido','confirmed'];
 
 
     protected $rules = [
         'direccion_recogida'=> 'required|min:20',
         'direccion_entrega'=> 'required|min:20',
-        'repartidor' => 'required',
-        'zoneSelected' => 'required'
+        
 
     ];
 
@@ -38,8 +34,8 @@ class ModalUpdateComponent extends Component
         'direccion_entrega.min'=>'Dirección de entrega debe contener un minimo de :min caracteres',
 
 
-        'repartidor.required'=>'Debes selecionar un repartidor',
-        'zoneSelected.required'=>'Debes selecionar una zona de entrega',
+        
+    
     ];
 
     public function updated($propertyName)
@@ -47,44 +43,56 @@ class ModalUpdateComponent extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function updatedZoneSelected()
-    {
-        if ($this->zoneSelected <> null) {
-            $this->deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')->join('detalles_zonas','detalles_zonas.id_repartidor','=','repartidores.id')
-            ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$this->zoneSelected)->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor')->get();
-        }
-    }
-    
+   
 
     public function resetInput()
     {
         $this->resetErrorBag();
         $this->resetValidation();
-        $this->reset(['repartidor','zoneSelected','direccion_recogida','direccion_entrega']);
+        $this->reset(['direccion_recogida','direccion_entrega']);
     }
 
     public function asingPedido($pedido)
     {
         $this->direccion_recogida = $pedido['direccion_recogida'];
         $this->direccion_entrega = $pedido['direccion_entrega'];
-        $this->repartidor = $pedido['id_repartidor'];
+        $this->id_pedido = $pedido['id_pedido'];
+    }
+    public function confirmed()
+    {
+       return redirect('/pedidos');
     }
 
-
-    public function updatePedido()
+    public function PUpdate()
     {
-        # code...
+        try {
+            Pedido::where('id',$this->id_pedido)->update([
+                'direccion_recogida' => $this->direccion_recogida,
+                'direccion_entrega' => $this->direccion_entrega
+            ]);
+            $this->dispatchBrowserEvent('closeModal'); 
+            $this->alert('success', 'Pedido actualizado correctamente', [
+                'position' => 'center',
+                'showConfirmButton' => true,
+                'confirmButtonText' => 'Entendido',
+                'onConfirmed' => 'confirmed'
+            ]);
+
+        } catch (\Throwable $th) {
+            $this->dispatchBrowserEvent('closeModal'); 
+            $this->alert('warning','Ocurrio un problema, intenta nuevamente', [
+            'position' => 'center'
+            ]);
+        }
+
+      
     }
 
 
 
     public function render()
     {
-        if ($this->zoneSelected <> null) {
-            $this->deliveries = Repartidor::join('users','users.id','=','repartidores.id_usuario')->join('detalles_zonas','detalles_zonas.id_repartidor','=','repartidores.id')
-            ->where('repartidores.estado',1)->where('detalles_zonas.id_zona',$this->zoneSelected)->select('users.name as nombre','repartidores.telefono','repartidores.id as id_repartidor')->get();
-        }     
-        $this->zones = Zona::where('estado',1)->select('nombre','id as id_zone')->get();  
+       
         return view('livewire.pedidos.modal-update-component');
     }
 }
